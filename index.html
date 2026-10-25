@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="description" content="Compress, resize and convert images privately with Velmora Image Utility.">
+  <title>Velmora Image Utility</title>
+  <link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/jpeg" href="favicon.jpg">  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="#">
+      <span class="brand-icon">V</span>
+      velmora <span class="muted">tools</span>
+    </a>
+    <nav>
+      <a href="#tools">Tools</a>
+      <a href="#privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="eyebrow">SIMPLE TOOLS. BETTER WORKFLOWS.</span>
+      <h1>Your images.<br><span>Ready for anything.</span></h1>
+      <p>Compress, resize and convert images in seconds. No account, no uploads, no fuss.</p>
+      <a class="button" href="#tools">Explore image tools ↓</a>
+      <div class="privacy-note">✓ Your images stay on your device</div>
+    </section>
+
+    <section class="tools section" id="tools">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">YOUR WORKSPACE</span>
+          <h2>Image tools</h2>
+          <p>Choose a tool, add an image, and you're ready to go.</p>
+        </div>
+        <span class="free-tag">3 FREE TOOLS</span>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Image tools">
+        <button class="tab active" data-tool="compress" role="tab"
+          aria-selected="true">↘ <span>Compress<small>Reduce file size</small></span></button>
+        <button class="tab" data-tool="resize" role="tab"
+          aria-selected="false">⤢ <span>Resize<small>Change dimensions</small></span></button>
+        <button class="tab" data-tool="convert" role="tab"
+          aria-selected="false">⇄ <span>Convert<small>Switch formats</small></span></button>
+      </div>
+
+      <div class="workspace">
+        <section class="editor">
+          <div class="editor-heading">
+            <div>
+              <h3 id="tool-title">Image compressor</h3>
+              <p id="tool-description">Make image files smaller while keeping them looking sharp.</p>
+            </div>
+            <span class="local-tag">● Local processing</span>
+          </div>
+
+          <input id="file-input" type="file" accept="image/*" hidden>
+
+          <div class="drop-zone" id="drop-zone" role="button" tabindex="0"
+            aria-label="Choose or drop an image">
+            <div class="upload-icon">↑</div>
+            <h3>Drop your image here</h3>
+            <p>or <button type="button" id="browse" class="text-link">browse files</button></p>
+            <small>Choose a browser-supported image up to 25 MB</small>
+          </div>
+
+          <div class="selected-file hidden" id="selected-file">
+            <img id="source-preview" alt="Selected image">
+            <div class="file-info">
+              <strong id="source-name"></strong>
+              <p id="source-meta"></p>
+              <span class="local-tag">● Image ready</span>
+            </div>
+            <button id="remove-file" class="remove-button" type="button">Remove</button>
+          </div>
+
+          <div class="settings">
+            <div id="compress-options" class="option">
+              <div class="label-row">
+                <label for="compress-quality">Image quality</label>
+                <strong><span id="compress-value">80</span>%</strong>
+              </div>
+              <input id="compress-quality" type="range" min="10" max="100" value="80">
+              <div class="range-labels"><span>Smaller file</span><span>Higher quality</span></div>
+            </div>
+
+            <div id="resize-options" class="option hidden">
+              <div class="dimension-fields">
+                <label>Width (px)
+                  <input id="width" type="number" min="1" max="12000" placeholder="Width">
+                </label>
+                <span>×</span>
+                <label>Height (px)
+                  <input id="height" type="number" min="1" max="12000" placeholder="Height">
+                </label>
+              </div>
+              <label class="check-row">
+                <input id="keep-ratio" type="checkbox" checked>
+                Keep aspect ratio
+              </label>
+            </div>
+
+            <div id="convert-options" class="option hidden">
+              <label for="format">Output format</label>
+              <select id="format">
+                <option value="image/webp">WebP</option>
+                <option value="image/jpeg">JPEG</option>
+                <option value="image/png">PNG</option>
+              </select>
+              <p class="hint">JPEG doesn't support transparency; transparent areas become white.</p>
+            </div>
+
+            <div id="output-quality-option" class="option">
+              <div class="label-row">
+                <label for="output-quality">Output quality</label>
+                <strong><span id="output-value">85</span>%</strong>
+              </div>
+              <input id="output-quality" type="range" min="10" max="100" value="85">
+            </div>
+
+            <p class="error hidden" id="error" role="alert"></p>
+            <button id="process" class="button process-button" disabled>
+              <span id="process-label">Compress image</span><span>→</span>
+            </button>
+            <p class="hint center">Your image is processed in your browser, not uploaded.</p>
+          </div>
+        </section>
+
+        <aside class="result">
+          <div class="result-heading">
+            <span class="eyebrow">YOUR RESULT</span>
+            <span id="result-status">Waiting for image</span>
+          </div>
+
+          <div id="empty-result" class="empty-result">
+            <div class="empty-art"><span>✦</span><i></i><b></b></div>
+            <h3>Your result will appear here</h3>
+            <p>Add an image and choose your settings to get started.</p>
+          </div>
+
+          <div id="result-content" class="hidden">
+            <div class="result-image"><img id="result-preview" alt="Processed image preview"></div>
+            <strong id="result-name" class="result-name"></strong>
+            <div class="stats">
+              <div><span>Original size</span><strong id="original-size">—</strong></div>
+              <div><span>New size</span><strong id="new-size">—</strong></div>
+              <div><span>Dimensions</span><strong id="dimensions">—</strong></div>
+            </div>
+            <div class="saving"><span>File size change</span><strong id="saving-value">—</strong></div>
+            <a id="download" class="button download-button" href="#">Download image ↓</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="how section" id="privacy">
+      <span class="eyebrow">MADE TO BE SIMPLE</span>
+      <h2>Three steps. That's it.</h2>
+      <div class="steps">
+        <article><span>01</span><h3>Add an image</h3><p>Choose a file from your device or drag it into the workspace.</p></article>
+        <article><span>02</span><h3>Choose your settings</h3><p>Pick the quality, dimensions or format you need.</p></article>
+        <article><span>03</span><h3>Download and go</h3><p>Preview the result and save it straight to your device.</p></article>
+      </div>
+      <div class="privacy-banner">
+        <span class="privacy-shield">✓</span>
+        <div><h3>Private by design.</h3><p>Image processing happens locally in your browser. The app doesn't upload your images to a server.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand" href="#"><span class="brand-icon">V</span> velmora <span class="muted">tools</span></a>
+    <span>Small tools. Smoother workflows.</span>
+    <span>© <span id="year"></span> Velmora</span>
+  </footer>
+  <div id="toast" class="toast hidden" role="status"></div>
+</body>
+</html>
