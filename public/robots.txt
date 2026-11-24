@@ -1,5 +1,4 @@
-
 User-agent: *
 Allow: /
 
-Sitemap: https://velmora-image-utility.testiunn6.workers.dev/sitemap.xml
+Sitemap: https://workers.dev
